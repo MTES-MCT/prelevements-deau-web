@@ -14,6 +14,7 @@ https://github.com/betagouv/tous-a-bord/blob/main/config/settings.py
 """
 
 import os
+import sentry_sdk
 import sys
 from pathlib import Path
 
@@ -33,6 +34,15 @@ def getenv_bool(key: str, default: bool):
         return default
     return value.casefold() in ["1", "true"]
 
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_ENV"),
+    send_default_pii=True,
+    enable_logs=True,
+    traces_sample_rate=1.0,
+    profile_session_sample_rate=1.0,
+    profile_lifecycle="trace",
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
